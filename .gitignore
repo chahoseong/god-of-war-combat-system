@@ -116,3 +116,6 @@ InitTestScene*.unity*
 # Third-party assets
 /[Aa]ssets/ThirdParty/
 /[Aa]ssets/ThirdParty.meta
+
+# JetBrains Rider
+/.idea/
