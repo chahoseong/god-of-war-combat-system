@@ -1,7 +1,9 @@
 {
     "name": "CombatSystem",
     "rootNamespace": "CombatSystem",
-    "references": [],
+    "references": [
+        "Unity.InputSystem"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

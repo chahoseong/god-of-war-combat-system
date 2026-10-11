@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7240387823048719164}
   - component: {fileID: 9036684694627161235}
   - component: {fileID: 2424681285859706416}
+  - component: {fileID: 4391056914023185499}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -76,6 +77,21 @@ MonoBehaviour:
   acceleration: 20
   rotationSpeed: 720
   gravity: -20
+--- !u!114 &4391056914023185499
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2281318497088713277}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97a9065cb9a1d3545a6319adde51c490, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: CombatSystem::CombatSystem.Player.PlayerController
+  moveAction: {fileID: -1246895598473198080, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  sprintAction: {fileID: 7983440169816151513, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  cameraTransform: {fileID: 0}
 --- !u!1001 &1312851203341937432
 PrefabInstance:
   m_ObjectHideFlags: 0
