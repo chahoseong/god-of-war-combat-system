@@ -33,6 +33,9 @@ namespace CombatSystem.Character
             weapon.transform.SetParent(weaponSocket, false);
             weapon.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
             equippedWeapon = weapon;
+
+            // 장착 상태가 모두 정해진 뒤에 알린다. 알림을 받은 쪽이 일관된 상태를 보게 하려는 것이다.
+            weapon.OnEquipped(gameObject);
         }
     }
 }
