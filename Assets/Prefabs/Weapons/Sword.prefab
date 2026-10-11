@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 156ad65200e835d4e994804b704534b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: CombatSystem::CombatSystem.Weapons.Weapon
+  animationSet: {fileID: 22100000, guid: 0de3f718ec2f16b49ada5b99caf6c3f6, type: 2}
 --- !u!1001 &2684599959064030575
 PrefabInstance:
   m_ObjectHideFlags: 0
