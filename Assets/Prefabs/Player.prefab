@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7240387823048719164}
   - component: {fileID: 9036684694627161235}
+  - component: {fileID: 2424681285859706416}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -58,6 +59,23 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.9, z: 0}
+--- !u!114 &2424681285859706416
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2281318497088713277}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23027ca7553b0a34cbe190c8605f219e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: CombatSystem::CombatSystem.Character.CharacterMovement
+  moveSpeed: 4
+  sprintSpeed: 7
+  acceleration: 20
+  rotationSpeed: 720
+  gravity: -20
 --- !u!1001 &1312851203341937432
 PrefabInstance:
   m_ObjectHideFlags: 0
