@@ -1,32 +1,43 @@
 using CombatSystem.Character;
+using CombatSystem.Weapons;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace CombatSystem.Player
 {
     [RequireComponent(typeof(CharacterMovement))]
+    [RequireComponent(typeof(CharacterEquipment))]
     public class PlayerController : MonoBehaviour
     {
         [SerializeField] private InputActionReference moveAction;
         [SerializeField] private InputActionReference sprintAction;
         [SerializeField] private InputActionReference lookAction;
         [SerializeField] private Transform cameraTarget;
+        [SerializeField] private Weapon initialWeapon;
         [SerializeField] private float pointerSensitivity = 0.1f;
         [SerializeField] private float stickSensitivity = 180f;
         [SerializeField] private float minPitch = -30f;
         [SerializeField] private float maxPitch = 60f;
 
         private CharacterMovement movement;
+        private CharacterEquipment equipment;
         private float yaw;
         private float pitch;
 
         private void Awake()
         {
             movement = GetComponent<CharacterMovement>();
+            equipment = GetComponent<CharacterEquipment>();
 
             Vector3 angles = cameraTarget.rotation.eulerAngles;
             yaw = angles.y;
             pitch = Mathf.DeltaAngle(0f, angles.x);
+
+            // 프리팹 에셋이므로 인스턴스를 만들어 장착한다. 지정하지 않으면 무기 없이 시작한다.
+            if (initialWeapon != null)
+            {
+                equipment.Equip(Instantiate(initialWeapon));
+            }
         }
 
         private void Update()
