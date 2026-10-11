@@ -112,3 +112,7 @@ InitTestScene*.unity*
 
 # Auto-generated cache in Assets folder
 /[Aa]ssets/[Ss]ceneDependencyCache*
+
+# Third-party assets
+/[Aa]ssets/ThirdParty/
+/[Aa]ssets/ThirdParty.meta
