@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4391056914023185499}
   - component: {fileID: 8944319721127125927}
   - component: {fileID: 7849357972925462701}
+  - component: {fileID: 1008766681425800226}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -95,6 +96,7 @@ MonoBehaviour:
   moveAction: {fileID: -1246895598473198080, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   sprintAction: {fileID: 7983440169816151513, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   lookAction: {fileID: 6940538419726410420, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  attackAction: {fileID: 1903506563957944628, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   cameraTarget: {fileID: 1420736806262975203}
   initialWeapon: {fileID: 0}
   pointerSensitivity: 0.1
@@ -114,6 +116,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: CombatSystem::CombatSystem.Character.CharacterAnimation
   animator: {fileID: 4851144941933647497}
+  overrideLayers:
+  - name: SwordArm
+    weight: 0.65
+  - name: SwordHand
+    weight: 1
 --- !u!114 &7849357972925462701
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -127,6 +134,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: CombatSystem::CombatSystem.Character.CharacterEquipment
   weaponSocket: {fileID: 910815371843748776}
+--- !u!114 &1008766681425800226
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2281318497088713277}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1b86529a74b8274480aa392daf12ae9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: CombatSystem::CombatSystem.Character.CharacterAttack
 --- !u!1 &6317743077544146053
 GameObject:
   m_ObjectHideFlags: 0
