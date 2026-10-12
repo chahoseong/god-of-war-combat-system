@@ -24,10 +24,10 @@ namespace CombatSystem.Tests.EditMode
         public void SetUp()
         {
             // EditMode 에서는 Awake/LateUpdate 가 불리지 않는다. Animator 를 직접 갱신한다.
-            // 프리팹에는 아직 CharacterAttack 이 없으므로 인스턴스에 붙여 쓴다.
             GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(PlayerPrefabPath);
             player = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
-            characterAttack = player.AddComponent<CharacterAttack>();
+            characterAttack = player.GetComponent<CharacterAttack>();
+            Assert.That(characterAttack, Is.Not.Null, "Player 프리팹에 CharacterAttack 이 없다.");
 
             CharacterAnimation characterAnimation = player.GetComponent<CharacterAnimation>();
             Assert.That(characterAnimation, Is.Not.Null, "Player 프리팹에 CharacterAnimation 이 없다.");
