@@ -17,8 +17,10 @@ namespace CombatSystem.Tests.EditMode
         private const string SpeedParameter = "Speed";
         private const string SwordArmLayer = "SwordArm";
         private const string SwordHandLayer = "SwordHand";
+        private const string AttackLayer = "Attack";
 
         private GameObject player;
+        private CharacterAnimation characterAnimation;
         private Animator animator;
         private AnimatorOverrideController testSet;
         private GameObject weaponObject;
@@ -30,7 +32,7 @@ namespace CombatSystem.Tests.EditMode
             // EditMode 에서는 Awake/LateUpdate 가 불리지 않는다. Speed 는 테스트가 직접 넣고 Animator 를 직접 갱신한다.
             GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(PlayerPrefabPath);
             player = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
-            CharacterAnimation characterAnimation = player.GetComponent<CharacterAnimation>();
+            characterAnimation = player.GetComponent<CharacterAnimation>();
             Assert.That(characterAnimation, Is.Not.Null, "Player 프리팹에 CharacterAnimation 이 없다.");
 
             SerializedObject serializedAnimation = new SerializedObject(characterAnimation);
@@ -91,6 +93,24 @@ namespace CombatSystem.Tests.EditMode
             Assert.That(PlayingClipNames(0), Is.EquivalentTo(new[] { "A_Idle_Base_Sword" }));
             Assert.That(PlayingClipNames(animator.GetLayerIndex(SwordArmLayer)), Is.EquivalentTo(new[] { "A_Idle_Base_Sword" }));
             Assert.That(PlayingClipNames(animator.GetLayerIndex(SwordHandLayer)), Is.EquivalentTo(new[] { "A_Idle_Base_Sword" }));
+        }
+
+        // AC-1: 검의 세트가 공격 자리표시 클립을 검의 공격 클립으로 바꾼다. 공격 요청은 애니메이션 시스템에 직접 보낸다.
+        // 이 테스트가 보는 것은 세트의 내용이지 공격 시스템이 아니다.
+        [Test]
+        public void OnEquipped_WithSwordPrefab_PlaysSwordAttackClipOnAttackLayer()
+        {
+            int attackLayer = animator.GetLayerIndex(AttackLayer);
+            Weapon sword = InstantiateSword();
+            sword.OnEquipped(player);
+            Evaluate(0f);
+            Assert.That(PlayingClipNames(attackLayer), Is.Empty, "요청하기 전에는 공격 애니메이션이 재생되면 안 된다.");
+
+            characterAnimation.PlayAttackAnimation();
+            Evaluate(0f);
+
+            Assert.That(PlayingClipNames(attackLayer),
+                Is.EquivalentTo(new[] { "A_Attack_LightCombo01A_RootMotion_Sword" }));
         }
 
         [Test]
