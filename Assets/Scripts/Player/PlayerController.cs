@@ -7,11 +7,13 @@ namespace CombatSystem.Player
 {
     [RequireComponent(typeof(CharacterMovement))]
     [RequireComponent(typeof(CharacterEquipment))]
+    [RequireComponent(typeof(CharacterAttack))]
     public class PlayerController : MonoBehaviour
     {
         [SerializeField] private InputActionReference moveAction;
         [SerializeField] private InputActionReference sprintAction;
         [SerializeField] private InputActionReference lookAction;
+        [SerializeField] private InputActionReference attackAction;
         [SerializeField] private Transform cameraTarget;
         [SerializeField] private Weapon initialWeapon;
         [SerializeField] private float pointerSensitivity = 0.1f;
@@ -21,6 +23,7 @@ namespace CombatSystem.Player
 
         private CharacterMovement movement;
         private CharacterEquipment equipment;
+        private CharacterAttack attack;
         private float yaw;
         private float pitch;
 
@@ -28,6 +31,7 @@ namespace CombatSystem.Player
         {
             movement = GetComponent<CharacterMovement>();
             equipment = GetComponent<CharacterEquipment>();
+            attack = GetComponent<CharacterAttack>();
 
             Vector3 angles = cameraTarget.rotation.eulerAngles;
             yaw = angles.y;
@@ -44,6 +48,7 @@ namespace CombatSystem.Player
         {
             UpdateLook();
             UpdateMove();
+            UpdateAttack();
         }
 
         // cameraTarget은 자식이라, 캐릭터가 Update에서 회전한 뒤에 정해야 그 회전에 끌려가지 않는다.
@@ -72,6 +77,15 @@ namespace CombatSystem.Player
             bool sprint = sprintAction.action.IsPressed();
 
             movement.Move(direction, sprint);
+        }
+
+        // 누르고 있는 동안이 아니라 누른 순간에만 요청한다. 매 프레임 요청하면 재생이 계속 처음으로 되감긴다.
+        private void UpdateAttack()
+        {
+            if (attackAction.action.WasPressedThisFrame())
+            {
+                attack.Attack();
+            }
         }
     }
 }
