@@ -24,9 +24,9 @@
 ### Pillar 1. Weight & Impact (중량감과 타격감)
 - **모션 가감속 (Kinetic Acceleration & Deceleration)**:
   - 무기를 휘두를 때 일정한 속도로 움직이지 않고, 예비 동작(Windup)에서의 서서히 축적되는 긴장감 ➔ 휘두르는 순간(Active)의 폭발적 가속 ➔ 타격 직후(Recovery)의 자연스러운 관성 감속 곡선을 유지합니다.
-- **히트스탑 (HitStop / Freeze Frame)**:
-  - 공격이 유효 타깃에 적중하는 순간, 공격자와 피격자의 애니메이션 프레임을 일시 정지(Time Scale = 0.05 또는 모션 정지)시켜 칼날이 저항을 뚫고 지나가는 물리적 마찰력을 표현합니다.
-  - 약공격 기준: 공격자 0.08초(약 5f), 피격자 0.12초(약 7f) 동결.
+- **비대칭 히트스탑 (Asymmetric HitStop)**:
+  - 공격이 유효 타깃에 적중하는 순간, 공격자와 피격자의 모션을 일시 동결하여 칼날이 저항을 뚫고 지나가는 물리적 마찰력을 표현합니다.
+  - 피격자의 동결 시간을 공격자보다 길게 설정하여, 공격자에게 유리한 템포(Attacker Advantage)를 확보하고 타격 저항감을 극대화합니다.
 - **카메라 임펄스 피드백 (Camera Impulse Shake)**:
   - 타격 적중 벡터와 무기 궤적에 비례한 방향성 카메라 진동을 적용하여 플레이어의 시각적 손맛을 완성합니다.
 
@@ -34,9 +34,9 @@
 - **행동에 대한 책임 (Commitment)**:
   - 공격을 개시하면 선딜레이(Windup) 및 판정 유효 구간(Active) 동안은 이동이나 회피로 즉시 취소할 수 없습니다. 플레이어는 적의 상태를 보고 신중하게 공격 버튼을 눌러야 합니다.
 - **조작의 유연성 (Fluidity & Input Buffering)**:
-  - 후딜레이(Recovery) 구간에 진입하면 조작 쾌적성을 위해 **선입력 버퍼 윈도우(Buffer Window, 0.25초)**가 개방됩니다. 이 윈도우 동안 입력된 차기 콤보 공격은 후딜레이 종료 프레임에 오차 없이 즉시 연계됩니다.
+  - 후딜레이(Recovery) 구간에 진입하면 조작 쾌적성을 위해 **선입력 버퍼 윈도우(Buffer Window)**가 개방됩니다. 이 윈도우 동안 입력된 차기 콤보 공격은 후딜레이 종료 프레임에 오차 없이 즉시 연계됩니다.
 - **위기 탈출 회피 캔슬 (Dodge Cancel)**:
-  - 공격 후딜레이(Recovery)의 특정 프레임 이후부터는 적의 공격을 피할 수 있도록 회피(Dodge) 명령을 통한 캔슬을 허용하며, 회피 시작 시 일정 무적 프레임(i-Frame, 약 12f)을 부여합니다.
+  - 공격 후딜레이(Recovery) 후반부에는 적의 반격에 대처할 수 있도록 회피(Dodge) 명령을 통한 캔슬을 허용하며, 회피 시작 시 무적 프레임(i-Frame)을 부여하여 위기 탈출 기회를 제공합니다.
 
 ### Pillar 3. Clarity & Feedback (명확한 정보 전달)
 - **명확한 전조 모션 (Telegraphing)**:
@@ -94,7 +94,7 @@ stateDiagram-v2
     
     state Windup {
         [*] --> WindupPhase
-        note right of WindupPhase: 선딜레이 구간<br>회전 보정 허용 (초기 4f)<br>모든 캔슬 불가 (Commitment)
+        note right of WindupPhase: 선딜레이 구간<br>회전 보정 허용 (초기 프레임)<br>모든 캔슬 불가 (Commitment)
     }
     
     Windup --> Active: 프레임 도달 (Hitbox Open)
@@ -109,7 +109,7 @@ stateDiagram-v2
     
     state HitStop {
         [*] --> HitStopPhase
-        note right of HitStopPhase: 적중 동결 구간 (0.08s~0.12s)<br>공격자/피격자 모션 일시정지<br>카메라 임펄스 발생
+        note right of HitStopPhase: 적중 동결 구간<br>공격자/피격자 모션 일시정지<br>카메라 임펄스 발생
     }
     
     HitStop --> Recovery: 동결 시간 경과
@@ -150,7 +150,7 @@ stateDiagram-v2
 ### 4.3. 타격 피드백 역학 (Kinetic Feedback Mechanics)
 
 - **비대칭 히트스탑 원리 (Asymmetric HitStop Principle)**:
-  - 타격 적중 시 공격자보다 **피격자의 동결 시간을 약 1.3~1.5배 길게 설정**합니다.
+  - 타격 적중 시 공격자보다 **피격자의 동결 시간을 상대적으로 더 길게 설정**합니다.
   - 이는 공격자가 먼저 경직에서 풀려나 후속 행동을 준비할 수 있는 공격자 이점(Attacker Advantage)을 부여함과 동시에, 칼날이 적의 육체를 가르고 빠져나오는 저항감을 시각적으로 극대화합니다.
 - **감쇄 기반 넉백 물리 (Decaying Knockback Model)**:
   - 넉백은 단순 순간 좌표 이동(Teleport)이 아닌, 피격 방향으로의 초기 충격 속도(Impulse Velocity) 부여 후 지수 감쇄(Decay/Drag) 형태의 물리 이동을 적용하여 무게감과 마찰력을 전달합니다.
@@ -190,7 +190,7 @@ flowchart LR
 - **주요 기능 명세**:
   - **콤보 그래프 (Combo Branching System)**: 1타 ➔ 2타 ➔ 피니셔로 이어지는 콤보 트리 전이 및 상태 관리
   - **선입력 버퍼 큐 (Input Buffer Queue)**: 후딜레이(Recovery) 윈도우 내 키 입력을 큐잉하고 다음 프레임에 즉시 릴리즈
-  - **회피 캔슬 및 무적 판정 (Dodge Cancel & i-Frame)**: 후딜레이 도중 회피 기동으로의 상태 전이 및 초기 12프레임 무적 처리
+  - **회피 캔슬 및 무적 판정 (Dodge Cancel & i-Frame)**: 후딜레이 도중 회피 기동으로의 상태 전이 및 초기 무적 프레임(i-Frame) 처리
   - **기본 그런트 (Basic Grunt)**: 단순 공격형 적. 플레이어에게 접근 후 명확한 전조 모션(Telegraph)을 거쳐 1타 공격을 시도하여, 플레이어의 회피 및 피격 타이밍 검증
 
 ### Phase 4. 게임 필 연출 고도화 (예정)
