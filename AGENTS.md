@@ -12,7 +12,7 @@ Comments, SPECs, commit messages, and assertion messages are written in Korean; 
   - `Assets/Tests/EditMode/<Module>/`
   Read the module's SPEC before touching its code. Code in a folder with no matching SPEC is unspecified: fix bugs only when asked; no new behavior without a SPEC.
 - Transition: the assembly split (§3) and module layout are being introduced. `Specs/Character/`, `Specs/Weapon/`, and `Assets/Scripts/{Character,Weapons,Player}/` predate them and are being replaced. Do not extend them.
-- SPEC format: Overview → `FR-n` → `AC-n` (one observable outcome each, ending with `(FR-n)`) → Out of Scope. An AC may be marked `(manual)` only when the user approves it with the SPEC.
+- Before writing or changing a SPEC, read `Specs/AGENTS.md`.
 - When an experiment confirms engine or API behavior, record it as `Docs/Research/YYYY-MM-DD-topic.md`.
 
 ## 2. Workflow and approval gates
@@ -36,7 +36,7 @@ Apply to `Assets/Scripts/` and `Assets/Tests/`.
 - Zero-GC in hot paths:
   - Hot path = `Update`/`FixedUpdate`/`LateUpdate`, `OnTrigger*`/`OnCollision*`, Animation Events, Input System callbacks, `StateMachineBehaviour.OnState*`, `OnAnimatorMove`/`OnAnimatorIK`, coroutine bodies, and anything they call. Allocation is fine in `Awake`, `Start`, `OnEnable`/`OnDisable`, `OnValidate`, and tests.
   - In hot paths: cache components and `Camera.main` in `Awake`; cache Animator parameters with `static readonly` `Animator.StringToHash`; no LINQ, string building, `.name`, `Debug.Log*`, per-call delegate creation, array-returning physics queries (use preallocated buffers), or `Instantiate`/`Destroy` for hit VFX/SFX (use `UnityEngine.Pool.ObjectPool<T>`).
-  - Each logic `Tick` has a test: `Assert.That(() => sut.Tick(dt), Is.Not.AllocatingGCMemory());` with `using Is = UnityEngine.TestTools.Constraints.Is;`.
+  - Each logic `Tick` has a test asserting it does not allocate, using Unity Test Framework's `Is.Not.AllocatingGCMemory()`.
 - Fake null: a destroyed `UnityEngine.Object` is non-null to C#; only Unity's `==`/`!=`/`bool` overloads, chosen by the compile-time type, detect it.
   - On Unity objects use `obj == null`, `obj != null`, `if (obj)`. Never `is null`, `is not null`, `?.`, `??`, `??=`, `ReferenceEquals`, or pattern matching.
   - Through an interface or generic, `t == null` misses destroyed objects: check `t is UnityEngine.Object o && o != null`, or constrain `where T : UnityEngine.Object`.
