@@ -696,6 +696,10 @@ PrefabInstance:
       propertyPath: initialWeapon
       value: 
       objectReference: {fileID: 5037938395738985953, guid: 12bfe4d36d3bf2047a685bc4e17b64bc, type: 3}
+    - target: {fileID: 4851144941933647497, guid: ad6bbaaee826dd146b8c838adeb704d9, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7240387823048719164, guid: ad6bbaaee826dd146b8c838adeb704d9, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
