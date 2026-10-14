@@ -3,6 +3,7 @@
     "rootNamespace": "CombatSystem.Tests.EditMode",
     "references": [
         "CombatSystem",
+        "CombatSystem.Core",
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner"
     ],
