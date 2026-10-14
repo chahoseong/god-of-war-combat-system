@@ -84,7 +84,7 @@ flowchart TD
 
 ### 4.1. 공격 1타 생명주기 (Attack Lifecycle FSM)
 
-단일 공격 액션은 철저히 구분된 4단계 내부 상태(State)를 거치며, 각 상태에 따라 조작 권한과 시스템 반응이 엄격히 제어됩니다.
+단일 공격 액션은 철저히 구분된 3단계 내부 상태(State)를 거치며, 각 상태에 따라 조작 권한과 시스템 반응이 엄격히 제어됩니다.
 
 ```mermaid
 stateDiagram-v2
@@ -104,15 +104,7 @@ stateDiagram-v2
         note right of ActivePhase: 판정 유효 구간<br>히트박스 On / 중복 타격 방지 큐 가동<br>이동/캔슬 불가
     }
     
-    Active --> HitStop: 적중 발생 (On Hit Event)
-    Active --> Recovery: 타격 없이 지속시간 종료 (Whiff)
-    
-    state HitStop {
-        [*] --> HitStopPhase
-        note right of HitStopPhase: 적중 동결 구간<br>공격자/피격자 모션 일시정지<br>카메라 임펄스 발생
-    }
-    
-    HitStop --> Recovery: 동결 시간 경과
+    Active --> Recovery: 지속시간 종료 (적중 여부와 무관)
     
     state Recovery {
         [*] --> EarlyRecovery
@@ -124,6 +116,12 @@ stateDiagram-v2
     Recovery --> Windup: 콤보 선입력 성공 (Next Combo)
     Recovery --> [*]: 회피 캔슬 발동
 ```
+
+> [!NOTE]
+> **히트스탑(HitStop)은 상태가 아니라, 어느 상태에든 걸리는 시간 정지입니다.**
+> - 적중 시 공격자와 피격자에게 각각 동결이 걸리며, 카메라 임펄스가 발생합니다.
+> - 동결 중에는 현재 상태의 진행 시간이 멈추고 모든 조작이 불가합니다(4.2 매트릭스의 HitStop 행).
+> - 동결이 풀리면 같은 상태의 같은 시점부터 이어집니다. 따라서 Active 도중 적중해도 남은 Active는 그대로 진행되며, 한 번의 휘두르기로 궤적에 걸린 다른 대상도 맞힐 수 있습니다.
 
 ### 4.2. 타이밍 아키텍처 및 조작 권한 매트릭스 (Timing Architecture & Authority Matrix)
 
