@@ -4,8 +4,9 @@ God of War-style third-person melee combat, built as an implementation portfolio
 Comments, SPECs, commit messages, and assertion messages are written in Korean; identifiers stay in English.
 
 ## 1. Sources of truth
-- Precedence (higher wins): §3 of this file > SPEC AC > `Docs/GDD.md` > `Docs/Research/`. If a request conflicts with a higher layer, stop and ask.
+- Precedence (higher wins): §3 of this file > SPEC AC > `Docs/GDD.md` > `Docs/ARCHITECTURE.md` > `Docs/Research/`. If a request conflicts with a higher layer, stop and ask.
 - `Docs/GDD.md`: combat vision, attack lifecycle (Windup / Active / Recovery), HitStop, control authority matrix. Read it before changing combat rules.
+- `Docs/ARCHITECTURE.md`: layers, module map (what each module decides and which decisions it observes), frame and time model. Read it before writing a new module's SPEC or changing anything that crosses module boundaries.
 - Module layout: one module name maps to
   - `Specs/<Module>/SPEC.md`
   - `Assets/Scripts/<logic root>/<Module>/` and `Assets/Scripts/<adapter root>/<Module>/` (see §3)
